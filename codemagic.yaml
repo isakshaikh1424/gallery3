@@ -21,21 +21,57 @@ workflows:
           brew update
           brew install cocoapods
 
-      - name: Regenerate Podfile without building
+      - name: Recreate Podfile with required content
         script: |
-          flutter precache
-          flutter build ios --simulator --no-pub || true
-          if [ -f ios/Podfile ]; then
-            echo "===== Regenerated Podfile ====="
-            cat ios/Podfile
-          else
-            echo "⚠️ Podfile was not regenerated."
-            exit 1
-          fi
+          # Create the Podfile with the provided content
+          echo "# Uncomment this line to define a global platform for your project" > ios/Podfile
+          echo "platform :ios, '14.0'" >> ios/Podfile
+          echo "" >> ios/Podfile
+          echo "# CocoaPods analytics sends network stats synchronously affecting flutter build latency." >> ios/Podfile
+          echo "ENV['COCOAPODS_DISABLE_STATS'] = 'true'" >> ios/Podfile
+          echo "" >> ios/Podfile
+          echo "project 'Runner', {" >> ios/Podfile
+          echo "  'Debug' => :debug," >> ios/Podfile
+          echo "  'Profile' => :release," >> ios/Podfile
+          echo "  'Release' => :release," >> ios/Podfile
+          echo "}" >> ios/Podfile
+          echo "" >> ios/Podfile
+          echo "def flutter_root" >> ios/Podfile
+          echo "  generated_xcode_build_settings_path = File.expand_path(File.join('..', 'Flutter', 'Generated.xcconfig'), __FILE__)" >> ios/Podfile
+          echo "  unless File.exist?(generated_xcode_build_settings_path)" >> ios/Podfile
+          echo "    raise \"#{generated_xcode_build_settings_path} must exist. If you're running pod install manually, make sure flutter pub get is executed first\"" >> ios/Podfile
+          echo "  end" >> ios/Podfile
+          echo "" >> ios/Podfile
+          echo "  File.foreach(generated_xcode_build_settings_path) do |line|" >> ios/Podfile
+          echo "    matches = line.match(/FLUTTER_ROOT\=(.*)/)" >> ios/Podfile
+          echo "    return matches[1].strip if matches" >> ios/Podfile
+          echo "  end" >> ios/Podfile
+          echo "  raise \"FLUTTER_ROOT not found in #{generated_xcode_build_settings_path}. Try deleting Generated.xcconfig, then run flutter pub get\"" >> ios/Podfile
+          echo "end" >> ios/Podfile
+          echo "" >> ios/Podfile
+          echo "require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)" >> ios/Podfile
+          echo "" >> ios/Podfile
+          echo "flutter_ios_podfile_setup" >> ios/Podfile
+          echo "" >> ios/Podfile
+          echo "target 'Runner' do" >> ios/Podfile
+          echo "  use_frameworks!" >> ios/Podfile
+          echo "  use_modular_headers!" >> ios/Podfile
+          echo "" >> ios/Podfile
+          echo "  flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))" >> ios/Podfile
+          echo "  #target 'RunnerTests' do" >> ios/Podfile
+          echo "  #  inherit! :search_paths" >> ios/Podfile
+          echo "  #end" >> ios/Podfile
+          echo "end" >> ios/Podfile
+          echo "" >> ios/Podfile
+          echo "post_install do |installer|" >> ios/Podfile
+          echo "  installer.pods_project.targets.each do |target|" >> ios/Podfile
+          echo "    flutter_additional_ios_build_settings(target)" >> ios/Podfile
+          echo "  end" >> ios/Podfile
+          echo "end" >> ios/Podfile
 
-      - name: Build for iOS Simulator
+      - name: Build for iOS Simulator (without modifying the Podfile)
         script: |
-          flutter build ios --simulator
+          flutter build ios --simulator --no-pub || true
 
       - name: Zip the Runner.app
         script: |

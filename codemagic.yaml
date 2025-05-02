@@ -11,19 +11,23 @@ workflows:
 
       - name: Install CocoaPods via Homebrew
         script: |
-          # Use Homebrew to avoid RubyGems version conflicts
           brew update
           brew install cocoapods
 
+      - name: Install iOS dependencies
+        script: |
+          cd ios
+          pod install
+          cd ..
+
       - name: Build for iOS Simulator
         script: |
-          #rm ios/Podfile
-          cat ios/Podfile
           flutter build ios --simulator
 
       - name: Zip the Runner.app
         script: |
           cd build/ios/iphonesimulator
           zip -r Runner.app.zip Runner.app
+
     artifacts:
       - build/ios/iphonesimulator/Runner.app.zip

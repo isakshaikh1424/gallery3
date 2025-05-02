@@ -18,6 +18,7 @@ workflows:
       - name: Build for iOS Simulator
         script: |
           rm ios/Podfile
+          cat ios/Podfile
           flutter build ios --simulator
 
       - name: Zip the Runner.app

@@ -9,10 +9,11 @@ workflows:
         script: |
           flutter pub get
 
-      - name: Install CocoaPods (latest)
+      - name: Install CocoaPods via Homebrew
         script: |
-          sudo gem uninstall cocoapods --executables --all || true
-          sudo gem install cocoapods
+          # Use Homebrew to avoid RubyGems version conflicts
+          brew update
+          brew install cocoapods
 
       - name: Build for iOS Simulator
         script: |

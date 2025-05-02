@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "55777096357",
+    "project_id": "pulus-c32d9",
+    "storage_bucket": "pulus-c32d9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55777096357:android:617aff6dab0b32e838934c",
+        "android_client_info": {
+          "package_name": "com.pulus.puluspatient"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy2sbiOFg68Piib1zvGMoNE7itVpL8bkM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

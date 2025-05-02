@@ -17,7 +17,7 @@ workflows:
 
       - name: Build for iOS Simulator
         script: |
-          rm ios/Podfile
+          #rm ios/Podfile
           cat ios/Podfile
           flutter build ios --simulator
 
